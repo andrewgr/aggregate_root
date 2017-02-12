@@ -28,10 +28,15 @@ module Potoroo
       end
 
       def emit(klass, payload = {})
-        event = klass.new(payload)
-        @event_sink << event
+        event = @event_sink.sink(klass, payload)
         apply(event)
       end
+    end
+  end
+
+  class EventSink
+    def sink(klass, payload = {})
+      klass.new(payload).tap { |event| (@events ||= []) << event }
     end
   end
 end
