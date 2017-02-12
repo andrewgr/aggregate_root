@@ -2,6 +2,16 @@ class Post
   include Potoroo::AggregateRoot
   include Potoroo::AggregateRoot::Mutatable
 
+  class Comment
+    def initialize(author, body)
+      @author = author
+      @body   = body
+    end
+
+    attr_reader :author, :body
+  end
+
+
   attr_reader :author, :body
 
   def add(author, body)
@@ -42,5 +52,21 @@ class Post
 
   apply(PostUpdated) do |event|
     @body = event.body
+  end
+
+  def comment(author, body)
+    raise 'Cannot comment a post because it has not been authored yet' unless authored?
+    raise 'Cannot comment a post because it is not published'          unless published?
+
+    emit CommentAdded, author: author, body: body
+  end
+
+  apply(CommentAdded) do |event|
+    @comments ||= []
+    @comments << Comment.new(event.author, event.body)
+  end
+
+  def comments
+    (@comments || []).dup
   end
 end

@@ -48,4 +48,14 @@ describe Potoroo::AggregateRoot::Mutatable do
 
     specify { expect { post << events }.to change { post.body }.from(nil).to('Lorem ipsum dolor') }
   end
+
+  describe do
+    before do
+      post
+        .add('alice', 'Lorem ipsum')
+        .publish()
+    end
+
+    specify { expect { post.comment('bob', 'Nice!') }.to change { post.comments.size }.from(0).to(1) }
+  end
 end

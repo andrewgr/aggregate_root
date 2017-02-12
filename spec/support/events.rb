@@ -30,6 +30,8 @@ class PostRemoved < Event
 end
 
 class CommentAdded < Event
+  define_method :author, -> { payload[:author] }
+  define_method :body,   -> { payload[:body] }
 end
 
 class CommentUpvoted < Event
