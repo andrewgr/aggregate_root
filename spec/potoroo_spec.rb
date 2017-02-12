@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe AggregateRoot::Mutatable do
+describe Potoroo::AggregateRoot::Mutatable do
   let(:event_sink) { double(:<< => nil) }
   subject(:post) { Post.new(event_sink) }
 

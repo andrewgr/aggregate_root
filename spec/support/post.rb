@@ -1,6 +1,6 @@
 class Post
-  include AggregateRoot
-  include AggregateRoot::Mutatable
+  include Potoroo::AggregateRoot
+  include Potoroo::AggregateRoot::Mutatable
 
   attr_reader :author, :body
 
