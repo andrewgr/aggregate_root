@@ -5,9 +5,10 @@ module Potoroo
         @event_sink = event_sink
       end
 
+      private
+
       def emit(klass, payload = {})
-        event = @event_sink.sink(klass, payload)
-        apply(event)
+        self << @event_sink.sink(klass, payload)
       end
     end
   end

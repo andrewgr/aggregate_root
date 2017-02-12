@@ -15,6 +15,8 @@ module Potoroo
       Array(events).inject(self, :apply)
     end
 
+    private
+
     def apply(event)
       event_handlers = self.class.instance_variable_get(:@event_handlers)
 
