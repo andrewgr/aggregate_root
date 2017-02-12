@@ -1,12 +1,16 @@
 class Event
-  def initialize(body)
-    @body = body
+  def initialize(payload)
+    @payload = payload
   end
 
-  attr_reader :body
+  def payload
+    @payload.dup
+  end
 end
 
 class PostAdded < Event
+  define_method :author, -> { payload[:author] }
+  define_method :body,   -> { payload[:body] }
 end
 
 class PostPublished < Event

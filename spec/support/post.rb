@@ -2,13 +2,14 @@ class Post
   include AggregateRoot
   include AggregateRoot::Mutatable
 
-  def foo
-    puts 'FOO CALLED'
-  end
+  attr_reader :author, :body
 
   def add(author, body)
     emit PostAdded, author: author, body: body
   end
 
-  apply(PostAdded) { |e| self.foo; puts "LOL" }
+  apply(PostAdded) do |event|
+    @author = event.author
+    @body   = event.body
+  end
 end
