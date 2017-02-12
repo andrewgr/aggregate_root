@@ -20,5 +20,14 @@ describe AggregateRoot::Mutatable do
     expect { post << post_added_event }.to change { post.author }.from(nil).to('alice')
   end
 
-  specify { expect { post.publish }.to change { post.published? }.from(false).to(true) }
+  describe do
+    context 'aggregate is in the state that allows the mutator to be called' do
+      before { post.add('alice', 'Lorem ipsum') }
+      specify { expect { post.publish }.to change { post.published? }.from(false).to(true) }
+    end
+
+    context 'aggregate is in the state that does not allow the mutator to be called' do
+      specify { expect { post.publish }.to raise_error(RuntimeError) }
+    end
+  end
 end

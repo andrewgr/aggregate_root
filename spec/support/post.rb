@@ -18,6 +18,7 @@ class Post
   end
 
   def publish
+    raise 'Cannot published a post because it has not been authored yet' unless authored?
     emit PostPublished
   end
 
@@ -28,6 +29,7 @@ class Post
   end
 
   def hide
+    raise 'Cannot hide a post because it has not been authored yet' unless authored?
     emit PostHidden
   end
 
