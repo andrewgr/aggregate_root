@@ -1,8 +1,8 @@
 require 'spec_helper'
 
 describe Potoroo::AggregateRoot::Mutatable do
+  let(:event_sink) { Potoroo::EventSink.new(correlation_id: 1) }
 
-  let(:event_sink) { Potoroo::EventSink.new }
   subject(:post) { Post.new(event_sink) }
 
   specify { expect { post.add('alice', 'Lorem ipsum') }.to change { post.author }.from(nil).to('alice') }
@@ -12,7 +12,7 @@ describe Potoroo::AggregateRoot::Mutatable do
   specify { expect { post.add('alice', 'Lorem ipsum') }.to change { post.authored? }.from(false).to(true) }
 
   describe do
-    let(:post_authored_event) { PostAuthored.new(author: 'alice', body: 'Lorem ipsum')}
+    let(:post_authored_event) { PostAuthored.new(1, author: 'alice', body: 'Lorem ipsum')}
     let(:event_sink) { double(sink: post_authored_event) }
 
     before { post.add('alice', 'Lorem ipsum') }
@@ -23,7 +23,7 @@ describe Potoroo::AggregateRoot::Mutatable do
   end
 
   specify do
-    post_authored_event = PostAuthored.new(author: 'alice', body: 'Lorem ipsum')
+    post_authored_event = PostAuthored.new(1, author: 'alice', body: 'Lorem ipsum')
     expect { post << post_authored_event }.to change { post.author }.from(nil).to('alice')
   end
 

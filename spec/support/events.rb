@@ -1,7 +1,10 @@
 class Event
-  def initialize(payload)
+  def initialize(correlation_id, payload)
+    @correlation_id = correlation_id
     @payload = payload
   end
+
+  attr_reader :correlation_id
 
   def payload
     @payload.dup
