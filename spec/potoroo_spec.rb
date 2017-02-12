@@ -12,12 +12,12 @@ describe AggregateRoot::Mutatable do
 
   specify do
     post.add('alice', 'Lorem ipsum')
-    expect(event_sink).to have_received(:<<).with(PostAdded)
+    expect(event_sink).to have_received(:<<).with(PostAuthored)
   end
 
   specify do
-    post_added_event = PostAdded.new(author: 'alice', body: 'Lorem ipsum')
-    expect { post << post_added_event }.to change { post.author }.from(nil).to('alice')
+    post_authored_event = PostAuthored.new(author: 'alice', body: 'Lorem ipsum')
+    expect { post << post_authored_event }.to change { post.author }.from(nil).to('alice')
   end
 
   describe do

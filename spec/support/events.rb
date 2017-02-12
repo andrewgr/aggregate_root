@@ -8,7 +8,7 @@ class Event
   end
 end
 
-class PostAdded < Event
+class PostAuthored < Event
   define_method :author, -> { payload[:author] }
   define_method :body,   -> { payload[:body] }
 end

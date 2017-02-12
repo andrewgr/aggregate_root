@@ -5,10 +5,10 @@ class Post
   attr_reader :author, :body
 
   def add(author, body)
-    emit PostAdded, author: author, body: body
+    emit PostAuthored, author: author, body: body
   end
 
-  apply(PostAdded) do |event|
+  apply(PostAuthored) do |event|
     @author = event.author
     @body   = event.body
   end
@@ -24,14 +24,14 @@ class Post
 
   apply(PostPublished) { |_| @published = true }
 
-  def published?
-    !!@published
-  end
-
   def hide
     raise 'Cannot hide a post because it has not been authored yet' unless authored?
     emit PostHidden
   end
 
   apply(PostHidden) { |_| @published = false }
+
+  def published?
+    !!@published
+  end
 end
