@@ -28,42 +28,8 @@ module AggregateRoot
 
     def emit(klass, body)
       event = klass.new(body)
-      #event_sink.sink(event)
+      @event_sink.sink(event)
       apply(event)
     end
   end
 end
-
-class Event
-  def initialize(body)
-    @body = body
-  end
-
-  attr_reader :body
-end
-
-class StartSubscription < Event
-end
-
-class EndSubscription < Event
-end
-
-class Subscription
-  include AggregateRoot
-  include AggregateRoot::Mutatable
-
-  def foo
-    puts 'FOO CALLED'
-  end
-
-  def start
-    emit(StartSubscription, {})
-  end
-
-  apply(StartSubscription) { |e| self.foo; puts "LOL" }
-end
-
-subscription = Subscription.new(nil)
-subscription.start
-
-subscription << StartSubscription.new({})
