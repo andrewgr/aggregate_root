@@ -13,6 +13,10 @@ class Post
     @body   = event.body
   end
 
+  def authored?
+    !@author.nil? && !@body.nil?
+  end
+
   def publish
     emit PostPublished
   end
