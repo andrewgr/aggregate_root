@@ -22,6 +22,10 @@ end
 class PostHidden < Event
 end
 
+class PostUpdated < Event
+  define_method :body,   -> { payload[:body] }
+end
+
 class PostRemoved < Event
 end
 

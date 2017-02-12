@@ -23,6 +23,8 @@ module Potoroo
       if event_handler  = event_handlers[event.class]
         instance_exec(event, &event_handler)
       end
+
+      self
     end
   end
 end

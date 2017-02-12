@@ -34,4 +34,13 @@ class Post
   def published?
     !!@published
   end
+
+  def update(body)
+    raise 'Cannot update a post because it has not been authored yet' unless authored?
+    emit PostUpdated, body: body
+  end
+
+  apply(PostUpdated) do |event|
+    @body = event.body
+  end
 end

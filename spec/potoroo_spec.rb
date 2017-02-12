@@ -37,4 +37,15 @@ describe Potoroo::AggregateRoot::Mutatable do
       specify { expect { post.publish }.to raise_error(RuntimeError) }
     end
   end
+
+  describe do
+    let(:events) do
+      [
+        PostAuthored.new(1, author: 'alice', body: 'Lorem ipsum'),
+        PostUpdated.new(1, body: 'Lorem ipsum dolor')
+      ]
+    end
+
+    specify { expect { post << events }.to change { post.body }.from(nil).to('Lorem ipsum dolor') }
+  end
 end
