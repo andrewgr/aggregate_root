@@ -26,8 +26,8 @@ module AggregateRoot
       @event_sink = event_sink
     end
 
-    def emit(klass, body)
-      event = klass.new(body)
+    def emit(klass, payload = {})
+      event = klass.new(payload)
       @event_sink << event
       apply(event)
     end

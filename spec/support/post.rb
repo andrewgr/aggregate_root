@@ -12,4 +12,20 @@ class Post
     @author = event.author
     @body   = event.body
   end
+
+  def publish
+    emit PostPublished
+  end
+
+  apply(PostPublished) { |_| @published = true }
+
+  def published?
+    !!@published
+  end
+
+  def hide
+    emit PostHidden
+  end
+
+  apply(PostHidden) { |_| @published = false }
 end

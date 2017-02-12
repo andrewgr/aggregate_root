@@ -14,4 +14,6 @@ describe AggregateRoot::Mutatable do
     post_added_event = PostAdded.new(author: 'alice', body: 'Lorem ipsum')
     expect { post << post_added_event }.to change { post.author }.from(nil).to('alice')
   end
+
+  specify { expect { post.publish }.to change { post.published? }.from(false).to(true) }
 end
