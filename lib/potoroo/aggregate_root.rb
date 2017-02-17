@@ -1,13 +1,13 @@
 module Potoroo
   module AggregateRoot
-    def initialize(event_sink)
-      @event_sink = event_sink
+    def initialize(aggregate_id, event_sink)
+      @aggregate_id, @event_sink = aggregate_id, event_sink
     end
 
     private
 
     def emit(klass, payload = {})
-      self << @event_sink.sink(klass, payload)
+      self << @event_sink.sink(klass, @aggregate_id, payload)
     end
   end
 end

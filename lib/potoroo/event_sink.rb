@@ -4,7 +4,7 @@ module Potoroo
       @correlation_id = correlation_id
     end
 
-    def sink(klass, payload = {})
+    def sink(klass, aggregate_id, payload = {})
       klass.new(@correlation_id, payload).tap do |event|
         (@events ||= []) << event
       end

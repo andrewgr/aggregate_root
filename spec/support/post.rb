@@ -11,7 +11,6 @@ class Post
     attr_reader :author, :body
   end
 
-
   attr_reader :author, :body
 
   def add(author, body)

@@ -3,7 +3,7 @@ require 'spec_helper'
 describe Potoroo::Projection do
   let(:event_sink) { Potoroo::EventSink.new(correlation_id: 1) }
 
-  subject(:post) { Post.new(event_sink) }
+  subject(:post) { Post.new(1, event_sink) }
 
   specify { expect { post.add('alice', 'Lorem ipsum') }.to change { post.author }.from(nil).to('alice') }
 
@@ -17,9 +17,7 @@ describe Potoroo::Projection do
 
     before { post.add('alice', 'Lorem ipsum') }
 
-    specify do
-      expect(event_sink).to have_received(:sink).with(PostAuthored, { author: 'alice', body: 'Lorem ipsum' })
-    end
+    specify { expect(event_sink).to have_received(:sink).with(PostAuthored, 1, author: 'alice', body: 'Lorem ipsum') }
   end
 
   specify do
