@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Potoroo::AggregateRoot::Mutatable do
+describe Potoroo::Projection do
   let(:event_sink) { Potoroo::EventSink.new(correlation_id: 1) }
 
   subject(:post) { Post.new(event_sink) }

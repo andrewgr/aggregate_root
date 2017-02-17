@@ -1,6 +1,6 @@
 class Post
   include Potoroo::AggregateRoot
-  include Potoroo::AggregateRoot::Mutatable
+  include Potoroo::Projection
 
   class Comment
     def initialize(author, body)

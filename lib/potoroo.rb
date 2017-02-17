@@ -1,4 +1,4 @@
 require 'potoroo/version'
 require 'potoroo/aggregate_root'
-require 'potoroo/aggregate_root/mutatable'
+require 'potoroo/projection'
 require 'potoroo/event_sink'
