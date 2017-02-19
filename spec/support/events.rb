@@ -1,10 +1,10 @@
 class Event
-  def initialize(correlation_id, payload)
-    @correlation_id = correlation_id
+  def initialize(aggregate_id:, payload:)
+    @aggregate_id = aggregate_id
     @payload = payload
   end
 
-  attr_reader :correlation_id
+  attr_reader :aggregate_id
 
   def payload
     @payload.dup

@@ -1,18 +1,16 @@
 require 'spec_helper'
 
 describe Potoroo::Projection do
-  let(:event_sink) { Potoroo::EventSink.new(correlation_id: 1) }
+  let(:event_sink) { Potoroo::EventSink.new }
 
   subject(:post) { Post.new(1, event_sink) }
 
   specify { expect { post.add('alice', 'Lorem ipsum') }.to change { post.author }.from(nil).to('alice') }
-
   specify { expect { post.add('alice', 'Lorem ipsum') }.to change { post.body }.from(nil).to('Lorem ipsum') }
-
   specify { expect { post.add('alice', 'Lorem ipsum') }.to change { post.authored? }.from(false).to(true) }
 
   describe do
-    let(:post_authored_event) { PostAuthored.new(1, author: 'alice', body: 'Lorem ipsum')}
+    let(:post_authored_event) { PostAuthored.new(aggregate_id: 1, payload: { author: 'alice', body: 'Lorem ipsum' })}
     let(:event_sink) { double(sink: post_authored_event) }
 
     before { post.add('alice', 'Lorem ipsum') }
@@ -21,7 +19,7 @@ describe Potoroo::Projection do
   end
 
   specify do
-    post_authored_event = PostAuthored.new(1, author: 'alice', body: 'Lorem ipsum')
+    post_authored_event = PostAuthored.new(aggregate_id: 1, payload: { author: 'alice', body: 'Lorem ipsum' })
     expect { post << post_authored_event }.to change { post.author }.from(nil).to('alice')
   end
 
@@ -39,8 +37,8 @@ describe Potoroo::Projection do
   describe do
     let(:events) do
       [
-        PostAuthored.new(1, author: 'alice', body: 'Lorem ipsum'),
-        PostUpdated.new(1, body: 'Lorem ipsum dolor')
+        PostAuthored.new(aggregate_id: 1, payload: { author: 'alice', body: 'Lorem ipsum' }),
+        PostUpdated.new(aggregate_id: 1, payload: { body: 'Lorem ipsum dolor' })
       ]
     end
 
@@ -48,11 +46,7 @@ describe Potoroo::Projection do
   end
 
   describe do
-    before do
-      post
-        .add('alice', 'Lorem ipsum')
-        .publish()
-    end
+    before { post.add('alice', 'Lorem ipsum').publish() }
 
     specify { expect { post.comment('bob', 'Nice!') }.to change { post.comments.size }.from(0).to(1) }
   end
