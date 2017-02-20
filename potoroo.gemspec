@@ -11,7 +11,7 @@ Gem::Specification.new do |gem|
   gem.test_files    = gem.files.grep(%r{^spec/})
   gem.name          = 'potoroo'
   gem.require_paths = ['lib']
-  gem.version       = Potoroo::VERSION
+  gem.version       = '0.1.0'
 
   gem.add_development_dependency 'rspec'
 end

@@ -1,5 +1,7 @@
 module Potoroo
   module AggregateRoot
+    include Projection
+
     def initialize(aggregate_id, event_sink)
       @aggregate_id, @event_sink = aggregate_id, event_sink
     end
